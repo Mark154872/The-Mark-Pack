@@ -1,0 +1,26 @@
+name: DeployNewVersion
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Technic Zip File
+      uses: thedoctor0/zip-release@master
+      with:
+        filename: 'technic.zip'
+        exclusions: '*.git* *.github* README.md server-icon.png instance.cfg mmc-pack.json /*The_Mark_Pack/*'
+
+    - name: Upload Technic Release Version
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.TOKEN }}
+        file: technic.zip
+        asset_name: The_Mark_Pack.zip
+        tag: pack
+        overwrite: true
